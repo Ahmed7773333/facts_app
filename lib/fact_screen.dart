@@ -8,7 +8,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: must_be_immutable, use_key_in_widget_constructors
 class FactScreen extends StatelessWidget {
   GlobalKey<FormState> kkey = GlobalKey<FormState>();
-
+  Widget containerWidget = const Center(
+    child: Icon(
+      Icons.fact_check,
+      color: Color(0xFFFE7D07),
+      size: 50,
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -16,10 +22,23 @@ class FactScreen extends StatelessWidget {
       child: BlocConsumer<FactsCubit, FactsState>(
         listener: (context, state) {
           if (state is FactsLoading) {
+            containerWidget = const Center(
+              child: CircularProgressIndicator(),
+            );
             debugPrint('loading...');
           } else if (state is FactsError) {
+            containerWidget = Center(
+              child: Icon(
+                Icons.error,
+                size: 30.r,
+                color: Colors.red,
+              ),
+            );
             debugPrint('error');
           } else if (state is FactsSuccess) {
+            containerWidget = SingleChildScrollView(
+                child: Text(FactsCubit.get(context).fact ?? 'invalid input'));
+            FactsCubit.get(context).textfield.clear();
             debugPrint('working...');
           } else if (state is ChangeChoise) {
             debugPrint('changed...');
@@ -57,54 +76,52 @@ class FactScreen extends StatelessWidget {
                         width: 3,
                       ),
                     ),
-                    child: SingleChildScrollView(
-                        child: Text(bloc.fact ?? 'invalid input')),
+                    child: containerWidget,
                   ),
                 ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     FilledButton(
-                //       style:
-                //           FilledButton.styleFrom(backgroundColor: Colors.white),
-                //       onPressed: () {
-                //         bloc.changeChoise(
-                //             chois: AppStrings.dateHint,
-                //             subTit: AppStrings.date);
-                //       },
-                //       child: Center(
-                //         child: Text(AppStrings.dateButton,
-                //             style: AppTheme.buttonStyle),
-                //       ),
-                //     ),
-                //     FilledButton(
-                //       style:
-                //           FilledButton.styleFrom(backgroundColor: Colors.white),
-                //       onPressed: () {
-                //         bloc.changeChoise(
-                //             chois: AppStrings.yearHint,
-                //             subTit: AppStrings.year);
-                //       },
-                //       child: Center(
-                //         child: Text(AppStrings.yearButton,
-                //             style: AppTheme.buttonStyle),
-                //       ),
-                //     ),
-                //     FilledButton(
-                //       style:
-                //           FilledButton.styleFrom(backgroundColor: Colors.white),
-                //       onPressed: () {
-                //         bloc.changeChoise(
-                //             chois: AppStrings.numberHint,
-                //             subTit: AppStrings.number);
-                //       },
-                //       child: Center(
-                //         child: Text(AppStrings.numberButton,
-                //             style: AppTheme.buttonStyle),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FilledButton(
+                      style:
+                          FilledButton.styleFrom(backgroundColor: Colors.white),
+                      onPressed: () {
+                        bloc.changeChoise(
+                            chois: AppStrings.carHint, subTit: AppStrings.car);
+                      },
+                      child: Center(
+                        child: Text(AppStrings.carButton,
+                            style: AppTheme.buttonStyle),
+                      ),
+                    ),
+                    FilledButton(
+                      style:
+                          FilledButton.styleFrom(backgroundColor: Colors.white),
+                      onPressed: () {
+                        bloc.changeChoise(
+                            chois: AppStrings.planetHint,
+                            subTit: AppStrings.planet);
+                      },
+                      child: Center(
+                        child: Text(AppStrings.planetButton,
+                            style: AppTheme.buttonStyle),
+                      ),
+                    ),
+                    FilledButton(
+                      style:
+                          FilledButton.styleFrom(backgroundColor: Colors.white),
+                      onPressed: () {
+                        bloc.changeChoise(
+                            chois: AppStrings.countryrHint,
+                            subTit: AppStrings.country);
+                      },
+                      child: Center(
+                        child: Text(AppStrings.countryButton,
+                            style: AppTheme.buttonStyle),
+                      ),
+                    ),
+                  ],
+                ),
                 TextFormField(
                   controller: bloc.textfield,
                   decoration: InputDecoration(

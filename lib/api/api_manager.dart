@@ -14,8 +14,8 @@ class ApiManager {
     }
   }
 
-  static Future<String> getFact({var limit = 2}) async {
-    final apiUrl = 'https://api.api-ninjas.com/v1/facts?limit=$limit';
+  static Future<String> getCountryFact({String country = 'Egypt'}) async {
+    final apiUrl = 'https://api.api-ninjas.com/v1/country?name=$country';
 
     final response = await http.get(
       Uri.parse(apiUrl),
@@ -24,24 +24,32 @@ class ApiManager {
     debugPrint('her');
     debugPrint(response.body);
 
-    return '${extractFact(response.body)}\n';
+    return response.body;
   }
 
-  static Future<String> getNumberFact({String number = '7'}) async {
-    Uri url = Uri.http('numbersapi.p.rapidapi.com', '/$number/math', {
-      "X-RapidAPI-Key": "api_f0f84e55-6c94-45ef-a6b8-9c1203531b88",
-    });
-    http.Response response = await http.get(url);
-    String data = response.body;
-    return data;
+  static Future<String> getCarFact({String car = 'carmy'}) async {
+    final apiUrl = 'https://api.api-ninjas.com/v1/cars?model=$car';
+
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {'X-Api-Key': 'nbQrxkmRsnLSoL8Sb5KNXA==2A7yEtq2UOWxUWe1'},
+    );
+    debugPrint('her');
+    debugPrint(response.body);
+
+    return response.body;
   }
 
-  static Future<String> getDateFact({String date = '6/21'}) async {
-    Uri url = Uri.http('numbersapi.p.rapidapi.com', '/$date/date', {
-      "X-RapidAPI-Key": "api_f0f84e55-6c94-45ef-a6b8-9c1203531b88",
-    });
-    http.Response response = await http.get(url);
-    String data = response.body;
-    return data;
+  static Future<String> getPlanetFact({String planet = 'Neptune'}) async {
+    final apiUrl = 'https://api.api-ninjas.com/v1/planets?name=$planet';
+
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: {'X-Api-Key': 'nbQrxkmRsnLSoL8Sb5KNXA==2A7yEtq2UOWxUWe1'},
+    );
+    debugPrint('her');
+    debugPrint(response.body);
+
+    return response.body;
   }
 }

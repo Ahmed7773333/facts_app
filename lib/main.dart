@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 870),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: AppTheme.mode,
         home: FactScreen(),
       ),

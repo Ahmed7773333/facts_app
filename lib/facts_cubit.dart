@@ -9,8 +9,8 @@ part 'facts_state.dart';
 class FactsCubit extends Cubit<FactsState> {
   FactsCubit() : super(FactsInitial());
 
-  String choise = AppStrings.yearHint;
-  String subTitle = AppStrings.year;
+  String choise = AppStrings.planetHint;
+  String subTitle = AppStrings.country;
 
   String? fact;
   TextEditingController textfield = TextEditingController();
@@ -19,34 +19,42 @@ class FactsCubit extends Cubit<FactsState> {
 
   Future<void> getFact() async {
     emit(FactsLoading());
-    if (choise == AppStrings.yearHint) {
+    if (choise == AppStrings.countryrHint) {
       try {
-        var limit = 1;
+        String country = 'Egypt';
         if (textfield.text.trim().isNotEmpty) {
-          limit = int.parse(textfield.text);
+          country = textfield.text;
         }
 
-        fact = await ApiManager.getFact(limit: limit);
-
+        fact = await ApiManager.getCountryFact(country: country);
+        fact = fact?.split(',').join('\n');
         emit(FactsSuccess());
       } catch (e) {
         emit(FactsError());
         debugPrint(e.toString());
         throw (Exception);
       }
-    } else if (choise == AppStrings.numberHint) {
+    } else if (choise == AppStrings.carHint) {
       try {
-        String data = await ApiManager.getNumberFact(number: textfield.text);
+        String data = await ApiManager.getCarFact(car: textfield.text);
         fact = data;
+        fact = fact?.split(',').join('\n');
+
         emit(FactsSuccess());
       } catch (e) {
         emit(FactsError());
         throw (Exception);
       }
-    } else if (choise == AppStrings.dateHint) {
+    } else if (choise == AppStrings.planetHint) {
+      String country = 'Earth';
+      if (textfield.text.trim().isNotEmpty) {
+        country = textfield.text;
+      }
       try {
-        String data = await ApiManager.getDateFact(date: textfield.text);
+        String data = await ApiManager.getPlanetFact(planet: country);
         fact = data;
+        fact = fact?.split(',').join('\n');
+
         emit(FactsSuccess());
       } catch (e) {
         emit(FactsError());
